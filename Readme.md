@@ -17,7 +17,7 @@ according to your preferences.
 
 ## Table of contents
 
-* [2 Spaces for indention](#2-spaces-for-indention)
+* [4 Spaces for indention](#4-spaces-for-indention)
 * [Newlines](#newlines)
 * [No trailing whitespace](#no-trailing-whitespace)
 * [Use Semicolons](#use-semicolons)
@@ -25,10 +25,10 @@ according to your preferences.
 * [Use single quotes](#use-single-quotes)
 * [Opening braces go on the same line](#opening-braces-go-on-the-same-line)
 * [Method chaining](#method-chaining)
-* [Declare one variable per var statement](#declare-one-variable-per-var-statement)
-* [Use lowerCamelCase for variables, properties and function names](#use-lowercamelcase-for-variables-properties-and-function-names)
-* [Use UpperCamelCase for class names](#use-uppercamelcase-for-class-names)
-* [Use UPPERCASE for Constants](#use-uppercase-for-constants)
+* [Declare all variables in one var statement](#declare-all-variables-in-one-var-statement)
+* [Use camelCase for variables, properties and function names](#use-camelcase-for-variables-properties-and-function-names)
+* [Use PascalCase for class names](#use-pascalcase-for-class-names)
+* [Use UPPERCASE_WITH_UNDERSCORES for Constants](#use-uppercase-with-underscores-for-constants)
 * [Object / Array creation](#object--array-creation)
 * [Use the === operator](#use-the--operator)
 * [Use multi-line ternary operator](#use-multi-line-ternary-operator)
@@ -36,9 +36,9 @@ according to your preferences.
 * [Object.freeze, Object.preventExtensions, Object.seal, with, eval](#objectfreeze-objectpreventextensions-objectseal-with-eval)
 * [Getters and setters](#getters-and-setters)
 
-## 2 Spaces for indention
+## 4 Spaces for indention
 
-Use 2 spaces for indenting your code and swear an oath to never mix tabs and
+Use 4 spaces for indenting your code and swear an oath to never mix tabs and
 spaces - a special kind of hell is awaiting you otherwise.
 
 ## Newlines
@@ -151,22 +151,21 @@ User.findOne({ name: 'foo' }).populate('bar')
   });
 ````
 
-## Declare one variable per var statement
+## Declare all variable in one var statement
 
-Declare one variable per var statement, it makes it easier to re-order the
-lines. However, ignore [Crockford][crockfordconvention] when it comes to
-declaring variables deeper inside a function, just put the declarations wherever
-they make sense.
+Declare all variable in one var statement, but prepend the commas and leave the semicolon on its own line. This makes diffs much easier to read, because you're not changing the line above/below when inserting at the end. Never declare in a block.
 
 *Right:*
 
 ```js
-var keys   = ['foo', 'bar'];
-var values = [23, 42];
+var keys   = ['foo', 'bar']
+  , values = [23, 42]
+  , object = {}
+  , key
+  ;
 
-var object = {};
 while (keys.length) {
-  var key = keys.pop();
+  key = keys.pop();
   object[key] = values.pop();
 }
 ```
@@ -176,20 +175,18 @@ while (keys.length) {
 ```js
 var keys = ['foo', 'bar'],
     values = [23, 42],
-    object = {},
-    key;
+    object = {};
 
 while (keys.length) {
-  key = keys.pop();
+  var key = keys.pop();
   object[key] = values.pop();
 }
 ```
 
-[crockfordconvention]: http://javascript.crockford.com/code.html
 
-## Use lowerCamelCase for variables, properties and function names
+## Use camelCase for variables, properties and function names
 
-Variables, properties and function names should use `lowerCamelCase`.  They
+Variables, properties and function names should use `camelCase`.  They
 should also be descriptive. Single character variables and uncommon
 abbreviations should generally be avoided.
 
@@ -205,9 +202,9 @@ var adminUser = db.query('SELECT * FROM users ...');
 var admin_user = db.query('SELECT * FROM users ...');
 ```
 
-## Use UpperCamelCase for class names
+## Use PascalCase for class names
 
-Class names should be capitalized using `UpperCamelCase`.
+Class names should be capitalized using `PascalCase`.
 
 *Right:*
 
@@ -223,7 +220,7 @@ function bank_Account() {
 }
 ```
 
-## Use UPPERCASE for Constants
+## Use UPPERCASE_WITH_UNDERSCORES for Constants
 
 Constants should be declared as regular variables or static class properties,
 using all uppercase letters.
@@ -256,7 +253,7 @@ File.fullPermissions = 0777;
 
 ## Object / Array creation
 
-Use trailing commas and put *short* declarations on a single line. Only quote
+Use leading commas and put *short* declarations on a single line. Only quote
 keys when your interpreter complains:
 
 *Right:*
@@ -264,8 +261,8 @@ keys when your interpreter complains:
 ```js
 var a = ['hello', 'world'];
 var b = {
-  good: 'code',
-  'is generally': 'pretty',
+    good: 'code',
+  , 'is generally': 'pretty'
 };
 ```
 
@@ -275,8 +272,8 @@ var b = {
 var a = [
   'hello', 'world'
 ];
-var b = {"good": 'code'
-        , is generally: 'pretty'
+var b = {"good": 'code',
+         is generally: 'pretty'
         };
 ```
 
@@ -308,7 +305,7 @@ if (a == '') {
 
 ## Use multi-line ternary operator
 
-The ternary operator should not be used on a single line. Split it up into multiple lines instead.
+The ternary operator should not be used on a single line. Split it up into multiple lines instead. Do not nest them.
 
 *Right:*
 
@@ -449,7 +446,7 @@ req.on('end', function() {
 
 ## No nested closures
 
-Use closures, but don't nest them. Otherwise your code will become a mess.
+Use closures, but try not to nest them. If you find you need to pass data between a bunch of functions, use [async.waterfall][waterfall] to handle it.
 
 *Right:*
 
@@ -472,6 +469,8 @@ setTimeout(function() {
   });
 }, 1000);
 ```
+
+[waterfall]: https://github.com/caolan/async#waterfall
 
 ## Use slashes for comments
 
